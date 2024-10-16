@@ -39,4 +39,71 @@ console.log(newP.age);
 newP.age = 23;
 console.log(newP.age);
 
-// Template Literal
+// Destructuring
+
+const obj = {
+  bookName: "Rich Dad Poor Dad",
+  publishYear: 1930,
+  price: 398,
+};
+
+const { bookName, publishYear, price } = obj;
+console.log(obj.bookName);
+
+const arr = [2, 2, 23, 94];
+
+const [aabra, ca, dabra, abra, cadabra] = arr;
+console.log(`aabra : ${aabra} & cadabra: ${cadabra}`);
+
+let entries = new Map([
+  ["key1", "value1"],
+  ["key2", "value2"],
+  ["key3", "value3"],
+]);
+
+console.log(typeof entries);
+
+entries = [
+  ["key1", "value1"],
+  ["key2", "value2"],
+  ["key3", "value3"],
+];
+
+console.log(typeof entries);
+
+const map = new Map();
+
+console.log(map);
+
+map.set("key", 13);
+
+var something = [[1, 4, 2]];
+
+console.log(typeof something);
+
+something = new Map([
+  [1, 3],
+  [3, 4],
+]);
+
+console.log(typeof something);
+
+const set = new Set();
+console.log(set.add(3));
+set.add(2);
+set.add(3);
+set.add(4);
+set.add(5);
+set.add(6);
+set.add(7);
+
+// Sets cannot be filtered until and unless they are converted to arrays
+
+const ans = Array.from(set).filter((id) => id % 2 == 0);
+console.log(ans);
+
+const newAns = Array.from(set).reduce((prev, curr) => {
+  return prev += curr;
+}, 10);
+
+console.log(newAns);
