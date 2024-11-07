@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Currency Converter</title>
+    <style>
+      body {
+        font-family: Poppins;
+        background-color: #f4f4f4;
+      }
+      .container {
+        width: 300px;
+        padding: 20px;
+        border-radius: 8px;
+        background-color: #fff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .result {
+        margin-top: 15px;
+        font-weight: bold;
+        color: #333;
+      }
+      .error {
+        color: #ff4d4d;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>Currency Converter</h2>
+      <input type="number" id="amount" placeholder="Enter amount" />
+      <select id="fromCurrency">
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+        <option value="GBP">GBP</option>
+      </select>
+      <select id="toCurrency">
+        <option value="INR">INR</option>
+        <option value="JPY">JPY</option>
+        <option value="CAD">CAD</option>
+      </select>
+      <button onclick="convertCurrency()">Convert</button>
+      <div id="result"></div>
+      <div id="error"></div>
+    </div>
+
+    <script src="currencyConvertor.js"></script>
+  </body>
+</html>
