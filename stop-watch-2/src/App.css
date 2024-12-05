@@ -1,0 +1,50 @@
+*{
+  font-family: Poppins;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.container{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 2px solid;
+  background-color: aliceblue;
+  margin: auto;
+  width: 450px;
+  margin-top: 200px;
+  padding: 95px;
+  height: 280px;
+}
+
+h1{
+  font-size: 40px;
+}
+
+h2{
+  font-size: 30px;
+}
+
+h3{
+  font-size: 35px;
+  color: rgb(13, 0, 97);
+}
+
+.buttons{
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+button{
+  padding: 8px;
+  width: 100px;
+  margin-top: 20px;
+  font-size: 14px;
+  outline: none;
+  background-color: seashell;
+  font-weight: bold;
+  cursor: pointer;
+}
