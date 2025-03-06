@@ -1,30 +1,49 @@
 const express = require("express");
+const cors = require("cors");
+
 const app = express();
 
 const fs = require("fs/promises");
 
 app.use(express.json());
 
+app.use(cors({
+    origin: "http://localhost:5173"
+}));
+
 const PORT = 3002;
 
-const users = [];
+let users = [];
+
+const loadUsers = async () => {
+    try {
+        const userData = await fs.readFile("./users.json", "utf-8");
+        users = JSON.parse(userData);
+    } catch (error) {
+        users = [];
+    }
+};
+
+const saveUsers = async () => {
+    await fs.writeFile("./users.json", JSON.stringify(users));
+}
 
 // Using middleware
 
 // Application Level Middleware
 
-const middleware = (req, res, next) => {
-    const age = req.query.age;
-    if (!age) {
-        res.status(400).send("Enter age in query");
-    } else {
-        if (age < 18) {
-            res.status(401).send("User not authorized");
-        } else {
-            next();
-        }
-    }
-};
+// const middleware = (req, res, next) => {
+//     const age = req.query.age;
+//     if (!age) {
+//         res.status(400).send("Enter age in query");
+//     } else {
+//         if (age < 18) {
+//             res.status(401).send("User not authorized");
+//         } else {
+//             next();
+//         }
+//     }
+// };
 
 // app.use(middleware);
 
@@ -37,6 +56,8 @@ const middleware = (req, res, next) => {
 // static
 
 // Third party middleware
+
+loadUsers();
 
 app.get("/users", async (_, res) => {
     try {
@@ -57,25 +78,29 @@ app.get("/user/:id", (req, res) => {
     }
 });
 
-app.post("/createuser", middleware, async (req, res) => { // Router level middleware
+// app.post("/createuser", middleware, async (req, res) // Router level middleware
+
+app.post("/createuser", async (req, res) => { // Router level middleware
     const { name, email } = req.body;
     const newId = Date.now();
     if (!name || !email) {
         res.status(400).json({ status: "Fail", message: "Incomplete details" });
     }
 
-    const data = await fs.readFile("./users.json", "utf-8");
-    users.push(JSON.parse(data));
-    users.push({
-        id: newId,
-        name: name,
-        email: email,
-    });
-    
-    // appendFile -> Leads to error in users.json as does not add comma after every file entry
+    // const data = await fs.readFile("./users.json", "utf-8");
+    // users.push(JSON.parse(data));
+    else {
+        users.push({
+            id: newId,
+            name: name,
+            email: email,
+        });
+        saveUsers();
+        // appendFile -> Leads to error in users.json as does not add comma after every file entry
 
-    await fs.writeFile("./users.json", JSON.stringify(users)); // JSON.stringify to convert to string and then write
-    res.status(201).json({ status: "Success", message: "User entered successfully" });
+        // await fs.writeFile("./users.json", JSON.stringify(users)); // JSON.stringify to convert to string and then write
+        res.status(201).json({ status: "Success", message: "User entered successfully" });
+    }
 });
 
 app.patch("/edituser/:id", (req, res) => {
@@ -91,6 +116,7 @@ app.patch("/edituser/:id", (req, res) => {
     }
     users[index].name = name;
     users[index].email = email;
+    saveUsers();
     res.status(201).json({ status: "Success", message: "User details edited successfully" });
 
 });
@@ -98,13 +124,15 @@ app.patch("/edituser/:id", (req, res) => {
 app.delete("/deleteuser/:id", (req, res) => {
     const id = req.params.id;
     const index = users.findIndex((el) => {
-        return el.id === id
+        return parseInt(el.id) === parseInt(id)
     });
     if (index == -1) {
         res.status(401).json({ status: "Fail", message: "Index not found" });
-    }
+    } else{
     let deletedData = users.splice(index, 1);
+    saveUsers();
     res.status(201).json({ status: "Success", message: "User deleted successfully", "Deleted Data": deletedData });
+    }
 });
 
 app.listen(PORT, () => {
